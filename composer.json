@@ -16,7 +16,8 @@
         "symfony/orm-pack": "^1.0"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^4.0"
+        "symfony/phpunit-bridge": "^4.0",
+        "phpunit/phpunit": "^6"
     },
     "authors": [
         {
