@@ -24,12 +24,6 @@
             "email": "tobias.franek@gmail.com"
         }
     ],
-    "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        }
-    },
     "autoload": {
         "psr-4": {
           "Tfranek\\APIUtilBundle\\": ""
