@@ -1,5 +1,5 @@
 {
-    "name": "tfranek/apit-util-bundle",
+    "name": "tfranek/api-util-bundle",
     "description": "Some util classes to build my APIs faster",
     "license": "MIT",
     "type": "symfony-bundle",
