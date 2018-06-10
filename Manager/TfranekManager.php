@@ -25,7 +25,7 @@ abstract class TfranekManager implements ManagerInterface
      */
     protected $entityManager;
     /**
-     * @var Entity
+     * @var string
      */
     protected $class;
     /**
@@ -37,7 +37,7 @@ abstract class TfranekManager implements ManagerInterface
      * @param EntityManager $entityManager
      * @param object $entity
      */
-    public function __construct(EntityManager $entityManager, object $entity)
+    public function __construct(EntityManager $entityManager, $entity)
     {
         $this->entityManager = $entityManager;
         $this->class = $entity;
@@ -162,7 +162,8 @@ abstract class TfranekManager implements ManagerInterface
     {
         $associations = $this->entityManager->getClassMetadata($this->class)->getAssociationMappings();
         $query = $this->entityManager->createQueryBuilder();
-        $parentName = strtolower(explode('\\', $this->class)[3]);
+        $explodedClassName = explode('\\', $this->class);
+        $parentName = strtolower($explodedClassName[count($explodedClassName) - 1]);
         $selectString = $parentName . ', ';
         $query->from($this->class, $parentName);
         foreach ($associations as $key => $value) {
