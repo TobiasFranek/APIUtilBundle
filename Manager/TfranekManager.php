@@ -128,7 +128,7 @@ abstract class TfranekManager implements ManagerInterface
         if(!$entity) {
             throw new ResourceNotFoundException('The Resource you want to delete could not be found');
         }
-        $this->entityManager->remove();
+        $this->entityManager->remove($entity);
         $this->entityManager->flush();
         return $id;
     }
