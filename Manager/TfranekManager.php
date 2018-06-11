@@ -142,6 +142,11 @@ abstract class TfranekManager implements ManagerInterface
         return $this->entityManager->getRepository($this->class);
     }
 
+    public function getQuery() : QueryBuilder
+    {
+        return $this->query;
+    }
+
     /**
      * Returns property of given data array.
      * If the key not exists default value will be returned.
@@ -181,7 +186,8 @@ abstract class TfranekManager implements ManagerInterface
     protected function generateWheres(array $parameters)
     {
         $i = 0;
-        $parentName = strtolower(explode('\\', $this->class)[3]);
+        $explodedClassName = explode('\\', $this->class);
+        $parentName = strtolower($explodedClassName[count($explodedClassName) - 1]);
         $parametersWithoutKeys = [];
         foreach ($parameters as $key => $value) {
             $or = false;
@@ -264,7 +270,8 @@ abstract class TfranekManager implements ManagerInterface
      {
         $var = str_replace('_', '.', $var);
         $parts = explode('.', $var);
-        $parentName = strtolower(explode('\\', $this->class)[3]);
+        $explodedClassName = explode('\\', $this->class);
+        $parentName = strtolower($explodedClassName[count($explodedClassName) - 1]);
         if ($parts[0] == $parentName) {
             return $this->entityManager->getClassMetadata($this->class)->getTypeOfField($parts[1]);
         } else {

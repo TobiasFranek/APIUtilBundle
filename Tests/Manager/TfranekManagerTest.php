@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Tfranek\APIUtilBundle\Manager\TfranekManager;
@@ -36,7 +37,13 @@ class TfranekManagerTest extends TestCase
         $this->objectManager = $this->createMock(EntityManager::class);
         $this->entity = '\stdClass';
 
-        $queryBuilder = $this->createMock(QueryBuilder::class);
+
+        $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
+                             ->setConstructorArgs([$this->objectManager])
+                             ->setMethods(array('getQuery', 'getResult'))
+                             ->getMock();
+
+        // $queryBuilder = new QueryBuilder($this->objectManager);
 
         $repository = $this->createMock(ServiceEntityRepository::class);
 
@@ -70,13 +77,17 @@ class TfranekManagerTest extends TestCase
                             ->method('getAssociationMappings')
                             ->willReturn([]);
 
-        $queryBuilder->expects($this->any())
-                     ->method('from')
-                     ->willReturn(null);
+        $metadata->expects($this->any())
+                 ->method('getTypeOfField')
+                 ->willReturn('integer');
 
         $queryBuilder->expects($this->any())
-                     ->method('select')
-                     ->willReturn(null);
+                     ->method('getQuery')
+                     ->willReturn($queryBuilder);
+
+        $queryBuilder->expects($this->any())
+                     ->method('getResult')
+                     ->willReturn([]);
 
         $this->objectManager->expects($this->any())
                             ->method('getClassMetadata')
@@ -171,6 +182,16 @@ class TfranekManagerTest extends TestCase
         $this->expectException(ResourceNotFoundException::class);
 
         $manager->delete(2);
+    }
+
+    public function testReadByRecursivly()
+    {
+        $manager = new TestManager($this->objectManager, $this->entity);
+
+        var_dump($manager->readByRecursively(['test' => '1']));
+
+        var_dump($manager->getQuery()->getDQL());
+        $this->assertTrue(true);
     }
 
     public function findCallback($entity, $id) 
