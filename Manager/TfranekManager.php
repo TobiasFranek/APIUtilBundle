@@ -191,10 +191,12 @@ abstract class TfranekManager implements ManagerInterface
         $parametersWithoutKeys = [];
         foreach ($parameters as $key => $value) {
             $or = false;
-            $firstLetter = substr($value, 0, 1);
-            if ($firstLetter == '|') {
-                $or = true;
-                $value = substr($value, 1);
+            if(gettype($value) !== 'array') {
+                $firstLetter = substr($value, 0, 1);
+                if ($firstLetter == '|') {
+                    $or = true;
+                    $value = substr($value, 1);
+                }
             }
             $key = str_replace('_', '.', $key);
             if (count(explode('.', $key)) < 2 && $key != 'orderBy' && $key != 'limit') {
