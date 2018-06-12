@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tfranek\APIUtilBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;

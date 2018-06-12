@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tfranek\APIUtilBundle\Manager\Interfaces;
 
 use Doctrine\ORM\Mapping\Entity;
