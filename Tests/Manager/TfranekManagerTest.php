@@ -32,6 +32,24 @@ class TfranekManagerTest extends TestCase
      */
     private $manager;
 
+    /**
+     * @var int
+     */
+    private $getTypeOfFieldCount = -1;
+
+    /**
+     * @var array
+     */
+    private $types = [
+        'integer',
+        'float',
+        'string',
+        'decimal',
+        'datetime',
+        'datetime',
+        'datetime'
+    ];
+
     protected function setUp()
     {
         $this->objectManager = $this->createMock(EntityManager::class);
@@ -79,7 +97,7 @@ class TfranekManagerTest extends TestCase
 
         $metadata->expects($this->any())
                  ->method('getTypeOfField')
-                 ->willReturn('integer');
+                 ->will($this->returnCallback([$this, 'getTypeOfFieldCallback']));
 
         $queryBuilder->expects($this->any())
                      ->method('getQuery')
@@ -188,10 +206,13 @@ class TfranekManagerTest extends TestCase
     {
         $manager = new TestManager($this->objectManager, $this->entity);
 
-        var_dump($manager->readByRecursively(['test' => '1']));
+        $manager->readByRecursively(['limit' => '30', 'testInteger' => '1', 'testFloat' => '3.4', 'testString' => 'Hello', 'testDecimal' => '4.1', 'datetimeTest' => ['startDate' => '2015-05-30'], 'datetimeTest2' => ['startDate' => '2015-05-30', 'endDate' => '2015-07-30'], 'datetimeTest3' => ['endDate' => '2015-07-30'], 'orderBy' => ['orderByTest' => 'DESC']]);
 
-        var_dump($manager->getQuery()->getDQL());
-        $this->assertTrue(true);
+        $expectedQuery = "SELECT stdclass FROM \stdClass stdclass WHERE stdclass.testInteger = ?0 AND stdclass.testFloat = ?1 AND stdclass.testString LIKE ?2 AND stdclass.testDecimal = ?3 AND stdclass.datetimeTest >= ?4 AND (stdclass.datetimeTest2 >= ?5 and stdclass.datetimeTest2 <= ?6) AND stdclass.datetimeTest3 <= ?7 ORDER BY stdclass.orderByTest DESC";
+
+        $this->assertEquals($expectedQuery, $manager->getQuery()->getDQL());
+
+        $this->assertEquals(30, $manager->getQuery()->getMaxResults());
     }
 
     public function findCallback($entity, $id) 
@@ -203,6 +224,12 @@ class TfranekManagerTest extends TestCase
     public function findByCallback($parameters) 
     {
         return $parameters ? [new \stdClass()] : [new \stdClass(), new \stdClass()];
+    }
+
+    public function getTypeOfFieldCallback() 
+    {
+        $this->getTypeOfFieldCount += 1;
+        return $this->types[$this->getTypeOfFieldCount];
     }
 }
 
