@@ -9,7 +9,7 @@ class TestManager extends TfranekManager {
     /**
      * {@inheritdoc}
      */
-    public function bind(object $entity, array $data): object
+    public function bind($entity, array $data)
      {
         return $entity;
     }

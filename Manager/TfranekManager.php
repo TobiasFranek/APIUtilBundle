@@ -48,7 +48,7 @@ abstract class TfranekManager implements ManagerInterface
      * @param array $data
      * @return Entity
      */
-    public function create(array $data) : object
+    public function create(array $data)
     {
         $entity = $this->bind(new $this->class(), $data);
         $this->entityManager->persist($entity);
@@ -61,7 +61,7 @@ abstract class TfranekManager implements ManagerInterface
      * @throws ResourceNotFoundException
      * @return Entity
      */
-    public function read(int $id) : object
+    public function read(int $id)
     {
         $entity = $this->entityManager->find($this->class, $id);
         if($entity) {
@@ -104,7 +104,7 @@ abstract class TfranekManager implements ManagerInterface
      * @throws ResourceNotFoundException
      * @return Entity
      */
-    public function update($id, array $data) : object
+    public function update(int $id, array $data)
     {
         $entity = $this->read($id);
 

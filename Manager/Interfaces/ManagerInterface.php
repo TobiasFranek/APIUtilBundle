@@ -15,14 +15,14 @@ interface ManagerInterface {
      * @param array $data
      * @return Entity
      */
-    public function create(array $data) : object;
+    public function create(array $data);
 
     /**
      * Returns a Element with given id.
      * @param $id
      * @return Entity
      */
-    public function read(int $id) : object;
+    public function read(int $id);
 
     /**
      * Returns all Elements
@@ -36,7 +36,7 @@ interface ManagerInterface {
      * @param array $data
      * @return Entity
      */
-    public function update(int $id, array $data) : object;
+    public function update(int $id, array $data);
 
     /**
      * Delete the Element with the given id and data
@@ -50,5 +50,5 @@ interface ManagerInterface {
      * @param array $data
      * @return Entity
      */
-    public function bind(object $entity, array $data) : object;
+    public function bind($entity, array $data);
 }
