@@ -61,8 +61,6 @@ class TfranekManagerTest extends TestCase
                              ->setMethods(array('getQuery', 'getResult'))
                              ->getMock();
 
-        // $queryBuilder = new QueryBuilder($this->objectManager);
-
         $repository = $this->createMock(ServiceEntityRepository::class);
 
         $metadata = $this->createMock(ClassMetadata::class);
