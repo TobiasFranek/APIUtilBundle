@@ -67,7 +67,7 @@ abstract class TfranekManager implements ManagerInterface
         if($entity) {
             return $entity;
         } else {
-            throw new ResourceNotFoundException('The Resource you are looking for could not be found');
+            throw new ResourceNotFoundException(404, 'The Resource you are looking for could not be found');
         }
     }
     /**
@@ -109,7 +109,7 @@ abstract class TfranekManager implements ManagerInterface
         $entity = $this->read($id);
 
         if(!$entity) {
-            throw new ResourceNotFoundException('The Resource you are looking for could not be found');
+            throw new ResourceNotFoundException(404, 'The Resource you are looking for could not be found');
         }
 
         $changedEntity = $this->bind($entity, $data);
@@ -126,7 +126,7 @@ abstract class TfranekManager implements ManagerInterface
     {
         $entity = $this->read($id);
         if(!$entity) {
-            throw new ResourceNotFoundException('The Resource you want to delete could not be found');
+            throw new ResourceNotFoundException(404, 'The Resource you want to delete could not be found');
         }
         $this->entityManager->remove($entity);
         $this->entityManager->flush();
@@ -229,7 +229,7 @@ abstract class TfranekManager implements ManagerInterface
                 } else if (isset($value['startDate']) && isset($value['endDate'])) {
                     $this->query->andWhere($key . ' >= ?' . $i . ' and ' . $key . ' <= ?' . ($i + 1));
                 } else {
-                    throw new NotValidDateformatException('Date format is not valid');
+                    throw new NotValidDateformatException(404, 'Date format is not valid');
                 }
             } else {
                 $operator = 'LIKE';
@@ -288,7 +288,7 @@ abstract class TfranekManager implements ManagerInterface
             if ($targetEntity) {
                 return $this->entityManager->getClassMetadata($targetEntity)->getTypeOfField($parts[1]);
             } else {
-                throw new ResourceNotFoundException('Table does not exist');
+                throw new ResourceNotFoundException(404, 'Resource does not exist');
             }
         }
     }
