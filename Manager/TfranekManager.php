@@ -142,9 +142,24 @@ abstract class TfranekManager implements ManagerInterface
         return $this->entityManager->getRepository($this->class);
     }
 
+    /**
+     * return the current query in the manager
+     * @retrun QueryBuilder
+     */
     public function getQuery() : QueryBuilder
     {
         return $this->query;
+    }
+
+    /**
+     * sets the Query of the Manager by the given QueryBuilder query
+     * @return self
+     */
+    public function setQuery(QueryBuilder $query) : self
+    {
+        $this->query = $query;
+
+        return $this;
     }
 
     /**
@@ -260,7 +275,12 @@ abstract class TfranekManager implements ManagerInterface
             }
             $i++;
         }
+        $existingParameters = $this->query->getParameters()->toArray();
+
         $this->query->setParameters($parametersWithoutKeys);
+        foreach($existingParameters as $param) {
+            $this->query->setParameter($param->getName(), $param->getValue());
+        }
     }
     /**
      * return the doctrine type of a given field
